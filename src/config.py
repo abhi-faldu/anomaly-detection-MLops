@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     # --- Training ---
     random_seed: int = 42
     test_size: float = 0.2
-    pr_auc_floor: float = 0.70
+    pr_auc_floor: float = 0.75
 
     # --- Serving ---
     model_stage: str = "Production"
