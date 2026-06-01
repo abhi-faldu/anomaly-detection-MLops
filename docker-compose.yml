@@ -1,0 +1,45 @@
+# Brings up the MLflow tracking server + the FastAPI prediction service.
+#
+# Usage:
+#   docker compose up --build
+#   # Train against the running server so artifacts are stored portably:
+#   MLFLOW_TRACKING_URI=http://localhost:5000 python -m src.registry.promote
+#   # Then the API (already pointed at the server) can load the champion.
+#   curl http://localhost:8000/health
+
+services:
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
+    container_name: ai4i-mlflow
+    ports:
+      - "5000:5000"
+    environment:
+      # MLflow 3's DNS-rebinding guard rejects unknown Host headers; allow the
+      # in-network service name and the host-mapped port.
+      MLFLOW_SERVER_ALLOWED_HOSTS: "mlflow:5000,localhost:5000,127.0.0.1:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: ai4i-api
+    ports:
+      - "8000:8000"
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MLFLOW_REGISTERED_MODEL_NAME: ai4i-failure-classifier
+    depends_on:
+      mlflow:
+        condition: service_healthy
+
+volumes:
+  mlflow-data:
