@@ -23,17 +23,17 @@ env/
 htmlcov/
 coverage.xml
 
-# Data (download instructions in README)
-data/
+# Data (download instructions in README) — root-anchored so src/data/ is tracked
+/data/
 
 # MLflow local store
 mlruns/
 mlflow.db
 mlartifacts/
 
-# Evidently reports (keep a sample if needed)
-reports/
-!reports/.gitkeep
+# Evidently reports (keep the dir tracked via .gitkeep)
+/reports/*
+!/reports/.gitkeep
 
 # Notebooks checkpoints
 .ipynb_checkpoints/
