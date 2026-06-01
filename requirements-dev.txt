@@ -1,0 +1,6 @@
+# Dev / CI dependencies (pinned). Installed on top of requirements.txt.
+-r requirements.txt
+pytest==9.0.3
+pytest-cov==7.1.0
+ruff==0.15.15
+httpx==0.28.1
