@@ -14,6 +14,8 @@ from src.train.train import build_model, train_model
 
 @pytest.fixture(scope="module")
 def df():
+    if not settings.data_path_abs.exists():
+        pytest.skip("real AI4I dataset not present (see README)")
     return load_raw()
 
 

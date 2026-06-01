@@ -84,8 +84,12 @@ def test_no_promotion_when_candidate_is_worse():
 
 def test_promote_best_end_to_end(tmp_path):
     """Register a real trained model into a temp registry and promote it."""
+    from src.config import settings
     from src.data.load import load_raw
     from src.train.train import train_model
+
+    if not settings.data_path_abs.exists():
+        pytest.skip("real AI4I dataset not present (see README)")
 
     mlflow.set_tracking_uri(f"sqlite:///{tmp_path / 'mlflow.db'}")
     mlflow.set_experiment("promote-e2e")

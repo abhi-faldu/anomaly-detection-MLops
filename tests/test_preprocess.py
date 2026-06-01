@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from src.config import settings
 from src.data.load import EXPECTED_COLUMNS, SchemaError, load_raw
 from src.data.preprocess import (
     CATEGORICAL_FEATURES,
@@ -43,6 +44,10 @@ def _toy_df(n: int = 40) -> pd.DataFrame:
     return df
 
 
+@pytest.mark.skipif(
+    not settings.data_path_abs.exists(),
+    reason="real AI4I dataset not present (see README)",
+)
 def test_load_raw_reads_real_dataset():
     df = load_raw()
     assert len(df) == 10000
