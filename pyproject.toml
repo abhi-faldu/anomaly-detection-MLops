@@ -1,0 +1,16 @@
+[project]
+name = "anomaly-detection-mlops"
+version = "0.1.0"
+description = "Production-style MLOps pipeline for predictive maintenance on the AI4I 2020 dataset."
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+ignore = ["E501"]  # line length handled by formatter; don't fail lint on it
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]
